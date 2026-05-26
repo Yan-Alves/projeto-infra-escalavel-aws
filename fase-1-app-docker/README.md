@@ -111,7 +111,7 @@ Caso encontre dificuldades durante a inicialização, verifique os cenários aba
 
 ## 🧹 Limpeza de Recursos Locais
 
-Mantendo a boa cultura de SRE (*Site Reliability Engineering*), limpe os resíduos de processos e alocação de memória do seu computador após validar o laboratório:
+Mantendo a boa cultura de SRE, limpe os resíduos de processos e alocação de memória do seu computador após validar o laboratório:
 
 ```bash
 # Interrompe a execução do processo do container
