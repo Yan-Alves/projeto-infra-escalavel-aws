@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Infraestrutura Escalável - AWS</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="nav-title">🚀 Cloud Lab</h1>
+                <div class="nav-menu">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">Sobre</a>
+                    <a href="#status" class="nav-link">Status</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1 class="hero-title">Projeto Infraestrutura Escalável: Alta Disponibilidade na AWS</h1>
+                <p class="hero-subtitle">Infraestrutura resiliente gerenciada por código e aplicação containerizada com Docker.</p>
+                <div class="hero-buttons">
+                    <button class="btn primary" onclick="showStatus()">Status do Sistema</button>
+                    <button class="btn secondary" onclick="showInfo()">Informações</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <h2>🎯 Objetivo da Arquitetura</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>🐳 Containerização</h3>
+                        <p>Isolamento da aplicação com Docker para portabilidade absoluta entre ambientes de Dev e Produção.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🏗️ Infraestrutura como Código</h3>
+                        <p>Provisionamento automatizado, seguro e idempotente de rede e servidores via Terraform.</p>
+                    </div>
+                    <div class="card">
+                        <h3>⚡ Alta Disponibilidade</h3>
+                        <p>Frota elástica distribuída em múltiplas zonas com Load Balancer e Auto Scaling Group.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="status" class="section">
+            <div class="container">
+                <h2>📊 Status do Cluster</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Load Balancer:</span>
+                        <span class="status-value active" id="container-status">Ativo</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Auto Scaling:</span>
+                        <span class="status-value active" id="server-status">Monitorando</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Ambiente:</span>
+                        <span class="status-value" id="environment">AWS Multi-AZ</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 - Engenharia DevOps e Cloud</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

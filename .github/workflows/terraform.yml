@@ -1,0 +1,82 @@
+name: "Terraform GitOps"
+
+on:
+  # Ativa o painel de botões manuais na aba Actions do GitHub
+  workflow_dispatch:
+    inputs:
+      fase:
+        description: 'Selecione a fase da infraestrutura'
+        required: true
+        type: choice
+        options:
+          - 'fase-2-infra-rede'
+          - 'fase-3-cluster-ha'
+      acao:
+        description: 'Selecione a acao do Terraform'
+        required: true
+        type: choice
+        options:
+          - 'plan'
+          - 'apply'
+          - 'destroy'
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'fase-2-infra-rede/**'
+      - 'fase-3-cluster-ha/**'
+
+jobs:
+  terraform:
+    name: "Terraform Execution"
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: "us-east-1"
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Instala o Terraform na máquina temporária do GitHub
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.7"
+
+      # Decide qual pasta e ação executar
+      - name: Set Target Directory
+        id: set-dir
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "dir=${{ github.event.inputs.fase }}" >> $GITHUB_OUTPUT
+            echo "action=${{ github.event.inputs.acao }}" >> $GITHUB_OUTPUT
+          else
+            if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q "fase-2-infra-rede"; then
+              echo "dir=fase-2-infra-rede" >> $GITHUB_OUTPUT
+            else
+              echo "dir=fase-3-cluster-ha" >> $GITHUB_OUTPUT
+            fi
+            echo "action=plan" >> $GITHUB_OUTPUT
+          fi
+
+      # Inicializa o Terraform na pasta selecionada
+      - name: Terraform Init
+        run: |
+          cd ${{ steps.set-dir.outputs.dir }}
+          terraform init
+
+      - name: Terraform Action
+        run: |
+          cd ${{ steps.set-dir.outputs.dir }}
+          
+          if [ "${{ steps.set-dir.outputs.action }}" = "plan" ]; then
+            terraform plan
+          elif [ "${{ steps.set-dir.outputs.action }}" = "apply" ]; then
+            terraform apply -auto-approve
+          elif [ "${{ steps.set-dir.outputs.action }}" = "destroy" ]; then
+            terraform destroy -auto-approve
+          fi
